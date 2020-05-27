@@ -4,19 +4,36 @@ from image_server.meta import get_identity_file
 from image_server.file import find_file
 from PIL import Image
 import io
+import re
 
 bp = Blueprint(__name__, __name__)
 
 
 def make_response_from_image(img):
-    if type(img) is not Image.Image:
-        raise(TypeError('Must be type PIL.Image.Image'))
     output = io.BytesIO()
     img.save(output, format='JPEG')
 
     response = make_response(output.getvalue())
     response.headers.set('Content-Type', 'image/jpeg')
     return response
+
+
+def resize_image(image, width, height):
+    w = h = None
+    if width == '' and height == '':
+        return image
+    elif width == 'auto' and height == 'auto':
+        return image
+    elif re.search("^(auto)?$", width):
+        delta = int(height) / image.height
+        w = image.width * delta
+        h = height
+    elif re.search("^(auto)?$", height):
+        delta = int(width) / image.width
+        w = width
+        h = image.height * delta
+
+    return image.resize((int(w), int(h)))
 
 
 @bp.route('/')
@@ -36,12 +53,17 @@ def serve_file(file):
 
     img = Image.open(path)
 
-    rot = request.values.get('rotation', 0)
-    img = img.rotate(int(rot))
+    crop = request.args.get('crop', '')
+    if re.search("^\d+(,\d+){3}$", crop):
+        crop = tuple([int(x) for x in crop.split(',')])
+        img = img.crop(crop)
 
-    size = request.values.get('size', '')
-    if size is not None:  # regex
-        size = tuple([int(x) for x in size.split(',')])
-    img.thumbnail(size)
+    rot = request.args.get('rotation', '0')
+    if re.search("\d", rot) and rot != '0':
+        img = img.rotate(int(rot))
+
+    width = request.args.get('width', '')
+    height = request.args.get('height', '')
+    img = resize_image(img, width, height)
 
     return make_response_from_image(img)
