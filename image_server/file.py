@@ -7,6 +7,11 @@ import os
 bp = Blueprint(__name__, __name__)
 
 
+def find_file(file):
+    store = current_app.config['STORAGE_PATH']
+    return os.path.join(store, file)
+
+
 @bp.route('/')
 def serve_form():
     return render_template('upload.html')
