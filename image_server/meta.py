@@ -20,7 +20,7 @@ def store_file_metadata(filename, owner):
     except Exception:
         data = ""
 
-    if data is "":
+    if data == "":
         data = '{}'
     meta_data = loads(data)
     meta_data[filename] = {
@@ -39,10 +39,10 @@ def delete_file_metadata(file, owner):
     except Exception:
         data = ""
 
-    if data is "":
+    if data == "":
         data = '{}'
     meta_data = loads(data)
-    del meta_data[filename]
+    del meta_data[file]
 
     with open(get_identity_file(owner), 'w+') as file:
         file.write(dumps(meta_data))

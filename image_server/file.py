@@ -9,7 +9,12 @@ bp = Blueprint(__name__, __name__)
 
 def find_file(file):
     store = current_app.config['STORAGE_PATH']
-    return os.path.join(store, file)
+    path = os.path.join(store, file)
+
+    if os.path.exists(path):
+        return path
+
+    return None
 
 
 @bp.route('/')
