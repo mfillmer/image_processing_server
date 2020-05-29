@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 def create_app():
     app = Flask(__name__)
     app.config['STORAGE_PATH'] = '/mnt/images'
+    app.config['SECRET_KEY'] = 'dev'
 
     jwt = JWTManager(app)
 
