@@ -28,7 +28,7 @@ def create_file():
     file = request.files['file']
     file.save(os.path.join(store, filename))
 
-    return jsonify(meta), 201
+    return jsonify(meta[filename]), 201
 
 
 @bp.route('/<file>', methods=['DELETE'])
