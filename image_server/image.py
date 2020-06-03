@@ -32,7 +32,9 @@ def resize_image(image, width, height):
         delta = int(width) / image.width
         w = width
         h = image.height * delta
-
+    else:
+        w = width
+        h = height
     return image.resize((int(w), int(h)))
 
 
