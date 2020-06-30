@@ -1,6 +1,30 @@
-<form action="/file/" method="post" enctype="multipart/form-data">
+<form id='form' name='form' enctype="multipart/form-data">
     <label>Wählen Sie die hochzuladenden Dateien von Ihrem Rechner aus:
         <input name="file" type="file">
     </label>
-    <button>hochladen</button>
+    <button type="submit">hochladen</button>
 </form>
+<pre id="message"></pre>
+<script>
+    const setMessage = msg => message.innerText = msg
+
+    const upload = event => {
+        event.preventDefault()
+        const accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTA3NTgzODUsIm5iZiI6MTU5MDc1ODM4NSwianRpIjoiZjY5YzE2OTgtN2E3MC00MzAyLWI0MjYtY2QzNjNjYTMzN2Y0IiwiaWRlbnRpdHkiOiJtb2NrIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.U_2GWtTQiSrlG27ST6yVnPaMrFSUGak3dAR7mRvTGQk'
+
+        fetch('/file/', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken
+            },
+            body: new FormData(document.getElementById('form'))
+        }).then(
+            res => res.ok ? res.json() : console.error(res),
+            error => console.error(error)
+        ).then(
+            json => setMessage(JSON.stringify(json))
+        )
+    }
+    document.querySelector('#form').addEventListener('submit', upload)
+</script>

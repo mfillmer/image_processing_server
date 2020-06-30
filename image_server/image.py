@@ -3,6 +3,7 @@ from json import loads
 from image_server.meta import get_identity_file
 from image_server.file import find_file
 from PIL import Image
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import io
 import re
 
@@ -39,8 +40,9 @@ def resize_image(image, width, height):
 
 
 @bp.route('/')
+@jwt_required
 def list_owners_files():
-    owner = 'mock'
+    owner = get_jwt_identity()
     path = get_identity_file(owner)
     if path is None:
         return 'file not found', 404
