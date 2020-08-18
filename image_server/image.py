@@ -10,12 +10,13 @@ import re
 bp = Blueprint(__name__, __name__)
 
 
-def make_response_from_image(img):
+def make_response_from_image(img, format):
     output = io.BytesIO()
-    img.save(output, format='JPEG')
+
+    img.save(output, format=format)
 
     response = make_response(output.getvalue())
-    response.headers.set('Content-Type', 'image/jpeg')
+    response.headers.set('Content-Type', 'image/'+format)
     return response
 
 
@@ -56,6 +57,7 @@ def serve_file(file):
         return 'file not found', 404
 
     img = Image.open(path)
+    format = img.format
 
     crop = request.args.get('crop', '')
     if re.search("^\d+(,\d+){3}$", crop):
@@ -70,4 +72,4 @@ def serve_file(file):
     height = request.args.get('height', '')
     img = resize_image(img, width, height)
 
-    return make_response_from_image(img)
+    return make_response_from_image(img, format)
