@@ -59,14 +59,14 @@ def serve_file(file):
     img = Image.open(path)
     format = img.format
 
+    rot = request.args.get('rotation', '0')
+    if re.search("\d", rot) and rot != '0':
+        img = img.rotate(int(rot))
+
     crop = request.args.get('crop', '')
     if re.search("^\d+(,\d+){3}$", crop):
         crop = tuple([int(x) for x in crop.split(',')])
         img = img.crop(crop)
-
-    rot = request.args.get('rotation', '0')
-    if re.search("\d", rot) and rot != '0':
-        img = img.rotate(int(rot))
 
     width = request.args.get('width', '')
     height = request.args.get('height', '')
