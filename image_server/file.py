@@ -22,7 +22,6 @@ def serve_form():
     return render_template('upload.html')
 
 
-# TODO: Exception Handling for different file types
 @bp.route('/', methods=['POST'])
 @jwt_required
 def create_file():
