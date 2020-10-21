@@ -8,7 +8,7 @@
                     "FLASK_APP": "${workspaceFolder}/image_server"
                 }
             },
-            "label": "image-server/run",
+            "label": "image-server",
             "command": "${workspaceFolder}/venv/bin/flask run",
             "type": "shell",
             "args": [],
@@ -17,39 +17,6 @@
             ],
             "presentation": {
                 "reveal": "always"
-            }
-        },
-        {
-            "type": "docker-build",
-            "label": "docker-build",
-            "platform": "python",
-            "dockerBuild": {
-                "tag": "imageserver:latest",
-                "dockerfile": "${workspaceFolder}/Dockerfile",
-                "context": "${workspaceFolder}",
-                "pull": true
-            }
-        },
-        {
-            "type": "docker-run",
-            "label": "docker-run: debug",
-            "dependsOn": [
-                "docker-build"
-            ],
-            "dockerRun": {
-                "env": {
-                    "FLASK_APP": "image_server:create_app()"
-                }
-            },
-            "python": {
-                "args": [
-                    "run",
-                    "--no-debugger",
-                    "--no-reload",
-                    "--host 0.0.0.0",
-                    "--port 9000"
-                ],
-                "module": "flask"
             }
         }
     ]
