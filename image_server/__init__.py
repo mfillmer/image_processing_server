@@ -6,8 +6,7 @@ from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
-    app.config['STORAGE_PATH'] = '/mnt'
-    app.config['SECRET_KEY'] = 'dev'
+    app.config.from_envvar('CONFIG')
 
     jwt = JWTManager(app)
     cors = CORS(app)

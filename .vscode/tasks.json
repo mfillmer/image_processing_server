@@ -6,7 +6,8 @@
                 "env": {
                     "FLASK_ENV": "development",
                     "FLASK_APP": "${workspaceFolder}/image_server",
-                    "FLASK_RUN_PORT": "9000"
+                    "FLASK_RUN_PORT": "9000",
+                    "CONFIG": "../config.py"
                 }
             },
             "label": "image-server/run",

@@ -131,3 +131,5 @@ dmypy.json
 # own files
 config.prod.py
 config.py
+
+images/**
