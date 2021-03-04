@@ -8,8 +8,8 @@ def create_app():
     app = Flask(__name__)
     app.config.from_envvar('CONFIG')
 
-    jwt = JWTManager(app)
-    cors = CORS(app)
+    JWTManager(app)
+    CORS(app)
 
     app.register_blueprint(file.bp, url_prefix="/file")
     app.register_blueprint(image.bp, url_prefix="/image")
