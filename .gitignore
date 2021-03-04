@@ -129,7 +129,4 @@ dmypy.json
 .pyre/
 
 # own files
-config.prod.py
-config.py
-
 images/**
