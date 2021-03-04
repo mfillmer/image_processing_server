@@ -1,3 +1,4 @@
+from image_server.caching import cache
 from flask import Blueprint, current_app, jsonify, make_response, request
 from json import loads
 from image_server.meta import get_identity_file
@@ -52,6 +53,11 @@ def list_owners_files():
 
 @bp.route('/<file>')
 def serve_file(file):
+    cache_key = request.full_path
+
+    if cache.get(cache_key) is not None:
+        return cache.get(cache_key)
+
     path = find_file(file)
     if path is None:
         return 'file not found', 404
@@ -72,4 +78,7 @@ def serve_file(file):
     if re.search("\d", rot) and rot != '0':
         img = img.rotate(int(rot))
 
-    return make_response_from_image(img, format)
+    response = make_response_from_image(img, format)
+    cache.set(cache_key, response)
+
+    return response
