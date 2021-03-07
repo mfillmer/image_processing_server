@@ -131,3 +131,4 @@ dmypy.json
 # own files
 images/**
 cache/**
+config.prod.py
