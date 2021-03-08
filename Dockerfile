@@ -8,6 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
+ENV CONFIG ../config.prod.py
 
 # Install pip requirements
 ADD requirements.txt .
@@ -21,4 +22,4 @@ RUN useradd appuser && chown -R appuser /app
 USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["gunicorn", "-w", "4", "--bind", "0.0.0.0:9000", "--worker-class", "eventlet", "image_server:create_app()"]
+CMD ["gunicorn", "-w", "2", "--bind", "0.0.0.0:9000", "--worker-class", "eventlet", "image_server:create_app()"]
