@@ -23,7 +23,7 @@ def serve_form():
 
 
 @bp.route('/', methods=['POST'])
-@jwt_required
+@jwt_required()
 def create_file():
     store = current_app.config['STORAGE_PATH']
     filename = str(uuid.uuid4())
@@ -37,7 +37,7 @@ def create_file():
 
 
 @bp.route('/<file>', methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def delete_file(file):
     store = current_app.config['STORAGE_PATH']
     meta = delete_file_metadata(file, get_jwt_identity())

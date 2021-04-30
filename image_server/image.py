@@ -42,7 +42,7 @@ def resize_image(image, width, height):
 
 
 @bp.route('/')
-@jwt_required
+@jwt_required()
 def list_owners_files():
     owner = get_jwt_identity()
     path = get_identity_file(owner)
