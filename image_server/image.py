@@ -65,6 +65,10 @@ def serve_file(file):
     img = Image.open(path)
     format = img.format
 
+    rot = request.args.get('rotation', '0')
+    if re.search("\d", rot) and rot != '0':
+        img = img.rotate(int(rot))
+
     crop = request.args.get('crop', '')
     if re.search("^\d+(,\d+){3}$", crop):
         crop = tuple([int(x) for x in crop.split(',')])
@@ -73,10 +77,6 @@ def serve_file(file):
     width = request.args.get('width', '')
     height = request.args.get('height', '')
     img = resize_image(img, width, height)
-
-    rot = request.args.get('rotation', '0')
-    if re.search("\d", rot) and rot != '0':
-        img = img.rotate(int(rot))
 
     response = make_response_from_image(img, format)
     cache.set(cache_key, response)
