@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
-ARG CONFIG 
+ENV CONFIG='test'
 
 # Install pip requirements
 ADD requirements.txt .
