@@ -1,6 +1,7 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
 FROM python:3.8-slim-buster
 
+ARG CONFIG_PATH
 EXPOSE 9000
 
 # Keeps Python from generating .pyc files in the container
@@ -8,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
-ARG CONFIG 
+ENV CONFIG=${CONFIG_PATH}
 
 # Install pip requirements
 ADD requirements.txt .
