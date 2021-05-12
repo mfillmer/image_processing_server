@@ -39,7 +39,7 @@ def create_file():
             meta = store_file_metadata(filename, get_jwt_identity())
             image = Image.open(file)
             image = restore_orientation(image)
-            format = image.format
+            format = image.format if image.format else 'jpeg'
 
             image.save(os.path.join(store, filename), format)
             image.close()
