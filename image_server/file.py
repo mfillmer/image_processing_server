@@ -1,3 +1,5 @@
+from image_server.util import restore_orientation
+from PIL import Image
 from flask import Blueprint, request, jsonify, render_template, current_app
 from image_server.meta import store_file_metadata, delete_file_metadata
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -31,7 +33,11 @@ def create_file():
     if 'file' not in request.files:
         return 'no file found', 400
     file = request.files['file']
-    file.save(os.path.join(store, filename))
+    image = Image.open(file)
+    image = restore_orientation(image)
+
+    image.save(os.path.join(store, filename), 'jpeg')
+    image.close()
 
     return jsonify(meta[filename]), 201
 
