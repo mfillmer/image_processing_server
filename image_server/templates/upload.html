@@ -1,6 +1,6 @@
 <form id='form' name='form' enctype="multipart/form-data">
     <label>Wählen Sie die hochzuladenden Dateien von Ihrem Rechner aus:
-        <input name="file" type="file">
+        <input name="file" multiple="true" type="file">
     </label>
     <button type="submit">hochladen</button>
 </form>
@@ -10,7 +10,7 @@
 
     const upload = event => {
         event.preventDefault()
-        const accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTA3NTgzODUsIm5iZiI6MTU5MDc1ODM4NSwianRpIjoiZjY5YzE2OTgtN2E3MC00MzAyLWI0MjYtY2QzNjNjYTMzN2Y0IiwiaWRlbnRpdHkiOiJtb2NrIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.U_2GWtTQiSrlG27ST6yVnPaMrFSUGak3dAR7mRvTGQk'
+        const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.wLKpjVW9IRyDIg2Wsrg9_vQ1oo3fk1Hsdi7RmP33giY'
 
         fetch('/file/', {
             method: 'POST',

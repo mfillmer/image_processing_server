@@ -1,3 +1,4 @@
+from werkzeug.datastructures import FileStorage
 from image_server.util import restore_orientation
 from PIL import Image
 from flask import Blueprint, request, jsonify, render_template, current_app
@@ -27,19 +28,28 @@ def serve_form():
 @bp.route('/', methods=['POST'])
 @jwt_required()
 def create_file():
-    store = current_app.config['STORAGE_PATH']
-    filename = str(uuid.uuid4())
-    meta = store_file_metadata(filename, get_jwt_identity())
-    if 'file' not in request.files:
+    if request.files is None:
         return 'no file found', 400
-    file = request.files['file']
-    image = Image.open(file)
-    image = restore_orientation(image)
 
-    image.save(os.path.join(store, filename), 'jpeg')
-    image.close()
+    result = {}
+    for file in request.files.getlist('file'):
+        try:
+            store = current_app.config['STORAGE_PATH']
+            filename = str(uuid.uuid4())
+            meta = store_file_metadata(filename, get_jwt_identity())
+            image = Image.open(file)
+            image = restore_orientation(image)
+            format = image.format
 
-    return jsonify(meta[filename]), 201
+            image.save(os.path.join(store, filename), format)
+            image.close()
+
+            result[filename] = meta
+        except Exception as e:
+            print(e)
+            continue
+
+    return jsonify(result), 201
 
 
 @bp.route('/<file>', methods=['DELETE'])
