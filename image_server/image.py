@@ -55,8 +55,8 @@ def list_owners_files():
 def serve_file(file):
     cache_key = request.full_path
 
-    if cache.get(cache_key) is not None:
-        return cache.get(cache_key)
+    # if cache.get(cache_key) is not None:
+    #     return cache.get(cache_key)
 
     path = find_file(file)
     if path is None:
@@ -67,7 +67,7 @@ def serve_file(file):
 
     rot = request.args.get('rotation', '0')
     if re.search("\d", rot) and rot != '0':
-        img = img.rotate(int(rot))
+        img = img.rotate(int(rot), expand=True)
 
     crop = request.args.get('crop', '')
     if re.search("^\d+(,\d+){3}$", crop):
